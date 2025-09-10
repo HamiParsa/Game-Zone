@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { BiSolidJoystickAlt } from "react-icons/bi";
 
+// Particle interface
 interface Particle {
   x: number;
   y: number;
@@ -17,7 +18,7 @@ const Home: React.FC = () => {
   const mousePosRef = useRef({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
-  // ذخیره سایز پنجره برای parallax
+  // Track window size for parallax effect
   useEffect(() => {
     if (typeof window !== "undefined") {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
@@ -27,6 +28,7 @@ const Home: React.FC = () => {
     }
   }, []);
 
+  // Initialize particles and handle animation
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -58,6 +60,7 @@ const Home: React.FC = () => {
         ctx.shadowColor = p.color;
         ctx.fill();
 
+        // Particle repulsion from cursor
         const dx = mousePosRef.current.x - p.x;
         const dy = mousePosRef.current.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -69,6 +72,7 @@ const Home: React.FC = () => {
         p.x += p.dx;
         p.y += p.dy;
 
+        // Wrap particles around edges
         if (p.x > canvas.width) p.x = 0;
         if (p.x < 0) p.x = canvas.width;
         if (p.y > canvas.height) p.y = 0;
@@ -80,6 +84,7 @@ const Home: React.FC = () => {
 
     animate();
 
+    // Track mouse movement
     const handleMouse = (e: MouseEvent) => {
       mousePosRef.current = { x: e.clientX, y: e.clientY };
       setMousePos({ x: e.clientX, y: e.clientY });
@@ -89,6 +94,7 @@ const Home: React.FC = () => {
     return () => window.removeEventListener("mousemove", handleMouse);
   }, []);
 
+  // Compute parallax style for elements based on mouse movement
   const parallaxStyle = (factor: number): React.CSSProperties => ({
     transform: windowSize.width
       ? `translate(${(mousePos.x - windowSize.width / 2) / factor}px, ${(mousePos.y - windowSize.height / 2) / factor}px)`
@@ -97,8 +103,10 @@ const Home: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      {/* Background canvas for particles */}
       <canvas id="bgCanvas" className="absolute top-0 left-0 w-full h-full z-0"></canvas>
 
+      {/* Header with site title */}
       <header className="flex justify-center items-center px-6 py-4 bg-black bg-opacity-40 backdrop-blur-md fixed w-full z-50">
         <h1 className="text-4xl flex sm:text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-indigo-500 to-purple-500 neon-text glitch">
           GameZone
@@ -106,6 +114,7 @@ const Home: React.FC = () => {
         </h1>
       </header>
 
+      {/* Main section */}
       <section className="relative h-screen flex flex-col items-center justify-center z-10 px-4 sm:px-6 md:px-12 text-center">
         <h2 style={parallaxStyle(50)} className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-indigo-500 to-purple-500 animate-flicker neon-text glitch">
           Enter the GameZone
@@ -118,10 +127,12 @@ const Home: React.FC = () => {
         </button>
       </section>
 
+      {/* Footer */}
       <footer className="bg-black bg-opacity-70 backdrop-blur-md text-gray-400 p-6 sm:p-8 flex justify-center items-center text-sm sm:text-base z-10">
         <span>&copy; 2025 GameZone. All rights reserved.</span>
       </footer>
 
+      {/* Neon/glitch styles */}
       <style jsx>{`
         .neon-text {
           text-shadow:
@@ -143,12 +154,15 @@ const Home: React.FC = () => {
           0%, 100% { transform: scale(1); opacity: 1; }
           50% { transform: scale(1.05); opacity: 0.85; }
         }
+        .animate-flicker {
+          animation: flicker 1.5s infinite;
+        }
         @keyframes flicker {
           0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
           20%, 22%, 24%, 55% { opacity: 0.4; }
         }
-        .animate-flicker {
-          animation: flicker 1.5s infinite;
+        .glitch {
+          animation: glitch 1s infinite;
         }
         @keyframes glitch {
           0% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
@@ -157,9 +171,6 @@ const Home: React.FC = () => {
           60% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
           80% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
           100% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
-        }
-        .glitch {
-          animation: glitch 1s infinite;
         }
       `}</style>
     </div>
