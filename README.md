@@ -1,7 +1,7 @@
 <div align="center">
   <h1>🎮 Game Zone</h1>
   <p>Play. Compete. Conquer. — Your ultimate web-based gaming experience.</p>
-  <a href="https://stellular-salamander-2f94ef.netlify.app/">
+  <a href="https://hamiparsa.github.io/Game-Zone/">
     <img src="https://img.shields.io/badge/View_Live_Project-000?style=for-the-badge&logo=netlify&logoColor=white"/>
   </a>
 </div>
