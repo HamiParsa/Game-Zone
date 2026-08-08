@@ -68,7 +68,6 @@ This project is perfect for front-end developers looking to explore **game mecha
   <img src="/pic3.png" width="700px" />
 </div>
 
-
 ---
 
 ## 🧠 Future Enhancements
